@@ -22,6 +22,12 @@ mongoose
   .then(console.log("Database connected"))
   .catch((err) => console.log(err));
 
+//get books
+app.get("/books", async (req, res) => {
+  BookStore.find().then((books) => res.json(books));
+});
+
+//adding new book
 app.post("/newbook", async (req, res) => {
   try {
     const newBook = new BookStore({
@@ -39,6 +45,16 @@ app.post("/newbook", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+//delete book
+app.delete("/delete/:id", (req, res) => {
+  const id = req.params.id;
+  BookStore.findByIdAndDelete({ _id: id }, (err) => {
+    if (err) {
+      console.log("book couldnt deleted");
+    }
+  });
 });
 
 app.get("/", (req, res) => {
