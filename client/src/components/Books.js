@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Books({ books }) {
+export default function Books({ books, lendBook, deleteBook, backBook }) {
   return (
     <div className="container mt-5">
       <table className="table table-hover table-dark">
@@ -24,7 +24,7 @@ export default function Books({ books }) {
           {books.map((book, index) => {
             return (
               <tr scope="col" key={index}>
-                <td>{book._id}</td>
+                <td scope="col">{book._id}</td>
                 <td>{book.bookName}</td>
                 <td>{book.author}</td>
                 <td>{book.quantity}</td>
@@ -33,6 +33,30 @@ export default function Books({ books }) {
                 <td>{book.publisher}</td>
                 <td>{book.publishYear}</td>
                 <td>{book.pageCount}</td>
+                <td>
+                  <button
+                    onClick={() => deleteBook(book._id)}
+                    className="btn btn-danger"
+                  >
+                    DELETE
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() => lendBook(book._id)}
+                    className="btn btn-warning"
+                  >
+                    BORROW
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() => backBook(book._id)}
+                    className="btn btn-primary"
+                  >
+                    BACK
+                  </button>
+                </td>
               </tr>
             );
           })}

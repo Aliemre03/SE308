@@ -57,8 +57,43 @@ app.delete("/delete/:id", (req, res) => {
   });
 });
 
+//lend book
+app.put("/lend/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await BookStore.findOneAndUpdate({ _id: id }, { $inc: { quantity: -1 } });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//back book
+app.put("/back/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await BookStore.findOneAndUpdate({ _id: id }, { $inc: { quantity: 1 } });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get("/search/:text", async (req, res) => {
+  const text = req.params.text;
+  console.log(text);
+  BookStore.find({
+    $or: [
+      { bookName: text },
+      { author: text },
+      { bookType: text },
+      { publisher: text },
+      { language: text },
+    ],
+  }).then((books) => res.json(books));
+});
+
 app.get("/", (req, res) => {
-  res.send("Welcome");
+  res.send("Hello world!");
 });
 
 app.listen(5000, () => {
