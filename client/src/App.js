@@ -1,116 +1,101 @@
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import AddBook from "./components/AddBook";
+import Books from "./components/Books";
 
 function App() {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    fetch("/books")
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonRes) => setBooks(jsonRes));
+  });
+
   return (
     <div className="App">
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button
-              type="button"
-              class="navbar-toggle collapsed"
-              data-toggle="collapse"
-              data-target="#bs-example-navbar-collapse-1"
-              aria-expanded="false"
-            >
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">
-              Brand
-            </a>
-          </div>
-
-          <div
-            class="collapse navbar-collapse"
-            id="bs-example-navbar-collapse-1"
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
+            Book Management
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
-            <ul class="nav navbar-nav">
-              <li class="active">
-                <a href="#">
-                  Link <span class="sr-only">(current)</span>
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="#">
+                  Books
                 </a>
               </li>
-              <li>
-                <a href="#">Link</a>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Add Book
+                </a>
               </li>
-              <li class="dropdown">
+              <li className="nav-item dropdown">
                 <a
+                  className="nav-link dropdown-toggle"
                   href="#"
-                  class="dropdown-toggle"
-                  data-toggle="dropdown"
+                  id="navbarDropdown"
                   role="button"
-                  aria-haspopup="true"
+                  data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Dropdown <span class="caret"></span>
+                  Genre
                 </a>
-                <ul class="dropdown-menu">
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
-                    <a href="#">Action</a>
+                    <a className="dropdown-item" href="#">
+                      Fantastic
+                    </a>
                   </li>
                   <li>
-                    <a href="#">Another action</a>
+                    <a className="dropdown-item" href="#">
+                      Science-Fiction
+                    </a>
                   </li>
                   <li>
-                    <a href="#">Something else here</a>
+                    <hr className="dropdown-divider" />
                   </li>
-                  <li role="separator" class="divider"></li>
                   <li>
-                    <a href="#">Separated link</a>
-                  </li>
-                  <li role="separator" class="divider"></li>
-                  <li>
-                    <a href="#">One more separated link</a>
+                    <a className="dropdown-item" href="#">
+                      History
+                    </a>
                   </li>
                 </ul>
               </li>
             </ul>
-            <form class="navbar-form navbar-left">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search" />
-              </div>
-              <button type="submit" class="btn btn-default">
-                Submit
+            <form className="d-flex">
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Search
               </button>
             </form>
-            <ul class="nav navbar-nav navbar-right">
-              <li>
-                <a href="#">Link</a>
-              </li>
-              <li class="dropdown">
-                <a
-                  href="#"
-                  class="dropdown-toggle"
-                  data-toggle="dropdown"
-                  role="button"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Dropdown <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="#">Action</a>
-                  </li>
-                  <li>
-                    <a href="#">Another action</a>
-                  </li>
-                  <li>
-                    <a href="#">Something else here</a>
-                  </li>
-                  <li role="separator" class="divider"></li>
-                  <li>
-                    <a href="#">Separated link</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
           </div>
         </div>
       </nav>
+
+      <AddBook />
+      <Books books={books} />
     </div>
   );
 }
