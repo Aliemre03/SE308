@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 export default function Books({ books, lendBook, deleteBook, backBook }) {
   return (
@@ -21,7 +22,7 @@ export default function Books({ books, lendBook, deleteBook, backBook }) {
           </tr>
         </thead>
         <tbody>
-          {books.map((book, index) => {
+          {books?.map((book, index) => {
             return (
               <tr scope="col" key={index}>
                 <td scope="col">{book._id}</td>
@@ -42,20 +43,14 @@ export default function Books({ books, lendBook, deleteBook, backBook }) {
                   </button>
                 </td>
                 <td>
-                  <button
-                    onClick={() => lendBook(book._id)}
-                    className="btn btn-warning"
-                  >
-                    BORROW
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() => backBook(book._id)}
-                    className="btn btn-primary"
-                  >
-                    BACK
-                  </button>
+                  <Link to={`/borrow/${book._id}`}>
+                    <button
+                      // onClick={() => lendBook(book._id)}
+                      className="btn btn-warning"
+                    >
+                      BORROW
+                    </button>
+                  </Link>
                 </td>
               </tr>
             );

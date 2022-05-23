@@ -4,6 +4,8 @@ import "./App.css";
 import AddBook from "./components/AddBook";
 import Books from "./components/Books";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import BorrowBook from "./components/BorrowBook";
+import BorrowBookList from "./components/BorrowBookList";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -118,8 +120,12 @@ function App() {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="/">
-                    Books
+                  <Link
+                    className="nav-link "
+                    aria-current="page"
+                    to="/borrowers"
+                  >
+                    Borrowers
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -203,6 +209,8 @@ function App() {
             }
           ></Route>
 
+          <Route path="/borrow/:id" element={<BorrowBook />}></Route>
+
           <Route
             path="/addbook"
             element={
@@ -213,6 +221,7 @@ function App() {
               />
             }
           ></Route>
+          <Route path="/borrowers" element={<BorrowBookList />}></Route>
         </Routes>
       </Router>
     </div>
