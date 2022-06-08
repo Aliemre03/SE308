@@ -44,12 +44,12 @@ export default function Books({ books, lendBook, deleteBook, backBook }) {
                 </td>
                 <td>
                   <Link to={`/borrow/${book._id}`}>
-                    <button
-                      // onClick={() => lendBook(book._id)}
-                      className="btn btn-warning"
-                    >
-                      BORROW
-                    </button>
+                    <button className="btn btn-warning">BORROW</button>
+                  </Link>
+                </td>
+                <td>
+                  <Link to={`update/${book._id}`}>
+                    <button className="btn btn-info">UPDATE</button>
                   </Link>
                 </td>
               </tr>

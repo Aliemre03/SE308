@@ -7,7 +7,6 @@ export default function BorrowBook() {
 
   const { id } = useParams();
   let navigate = useNavigate();
-  console.log(id);
 
   const borrowBook = async () => {
     await axios

@@ -28,6 +28,16 @@ app.get("/books", async (req, res) => {
   BookStore.find().then((books) => res.json(books));
 });
 
+//get book
+app.get("/book/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const book = BookStore.findById(id).then((book) => res.json(book));
+  } catch (err) {
+    console.log(err);
+  }
+});
 //adding new book
 app.post("/newbook", async (req, res) => {
   try {
@@ -58,6 +68,30 @@ app.delete("/delete/:id", (req, res) => {
   });
 });
 
+//update book
+app.put("/update/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const oldBook = await BookStore.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          bookName: req.body.bookName,
+          author: req.body.author,
+          quantity: req.body.quantity,
+          bookType: req.body.bookType,
+          language: req.body.language,
+          publisher: req.body.publisher,
+          publishYear: req.body.publishYear,
+          pageCount: req.body.pageCount,
+        },
+      }
+    );
+  } catch (err) {
+    console.log("update error" + err);
+  }
+});
+
 //lend book
 app.put("/lend/:id", async (req, res) => {
   try {
@@ -79,6 +113,8 @@ app.post("/borrow/:id", async (req, res) => {
     });
 
     const borrow = await newBorrow.save();
+
+    // decrease quantity
     await BookStore.findOneAndUpdate(
       { _id: bookId },
       { $inc: { quantity: -1 } }
@@ -108,31 +144,20 @@ app.get("/borrowedBookList", async (req, res) => {
   }
 });
 
-// //back book
-// app.put("/back/:id", async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     await BookStore.findOneAndUpdate({ _id: id }, { $inc: { quantity: 1 } });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
-
 //return borrowed book
 app.delete("/return/:id", async (req, res) => {
   const id = req.params.id;
   const bookId = req.body.bookId;
-  console.log("id: ", id);
-  console.log("bookid: ", bookId);
-  await Borrower.findByIdAndDelete({ _id: id });
 
+  //delete borrower
+  await Borrower.findByIdAndDelete({ _id: id });
+  //increace quantity
   await BookStore.findOneAndUpdate({ _id: bookId }, { $inc: { quantity: 1 } });
 });
 
 //searching
 app.get("/search/:text", async (req, res) => {
   const text = req.params.text;
-  console.log(text);
   BookStore.find({
     $or: [
       { bookName: text },

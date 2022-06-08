@@ -12,8 +12,6 @@ export default function BorrowBookList() {
   }, []);
 
   const backBook = async (id, bookId) => {
-    console.log("id: ", id);
-    console.log("bookid: ", bookId);
     await axios.delete("/return/" + id, { data: { bookId: bookId } });
   };
 

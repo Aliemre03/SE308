@@ -6,6 +6,7 @@ import Books from "./components/Books";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import BorrowBook from "./components/BorrowBook";
 import BorrowBookList from "./components/BorrowBookList";
+import UpdateBook from "./components/UpdateBook";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -31,6 +32,8 @@ function App() {
       })
       .then((jsonRes) => setBooks(jsonRes));
   }, []);
+
+  console.log(books);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,6 +75,10 @@ function App() {
   const deleteBook = (id) => {
     axios.delete("/delete/" + id);
     alert(`The book with id ${id} is deleted`);
+  };
+
+  const updateBook = (id) => {
+    axios.put("/update/" + id);
   };
 
   const lendBook = (id) => {
@@ -210,7 +217,7 @@ function App() {
           ></Route>
 
           <Route path="/borrow/:id" element={<BorrowBook />}></Route>
-
+          <Route path="/update/:id" element={<UpdateBook />}></Route>
           <Route
             path="/addbook"
             element={
